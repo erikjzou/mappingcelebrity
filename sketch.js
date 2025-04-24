@@ -8,8 +8,8 @@ let nodeImages = {};
 let myFont;
 //to do the different colors, I could attach the colors 
 
-let minNode = 40;
-let maxNode = 80;
+let minNode = 60;
+let maxNode = 100;
 function preload() {
   nodeImages["Voltaire"] = loadImage("voltaire.jpg");
   nodeImages["Benjamin Franklin"] = loadImage("franklin.jpg");
@@ -105,7 +105,7 @@ function setup() {
    fill(lightblu);
    rect(windowWidth/25, windowHeight/3.15, windowWidth/3.2, 5);
    fill(255);
-   textSize(12);
+   textSize(16);
    text("In the eighteenth century, celebrities, who captured the public's attention in the social hubs of London and Paris, emerged in multiple spheres ranging from the arts to fashion. This network reveals a crucial dimension of celebrity culture: the ways in which celebrity circles intersected. Hover over celebrities to see who they connected with throughout their lives", windowWidth/20, windowHeight/2, windowWidth/3.5)
    
   hoveredNode = null;
