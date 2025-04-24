@@ -6,10 +6,11 @@ let hoveredNode = null;
 let hoveredEdge = null;
 let nodeImages = {};
 let myFont;
+let maskedImages = {}; // To store masked circular images
 //to do the different colors, I could attach the colors 
 
-let minNode = 60;
-let maxNode = 100;
+let minNode = 80;
+let maxNode = 120;
 function preload() {
   nodeImages["Voltaire"] = loadImage("voltaire.jpg");
   nodeImages["Benjamin Franklin"] = loadImage("franklin.jpg");
@@ -89,6 +90,24 @@ function setup() {
     let y = height / 2 + sin(angle) * radius;
     nodePositions[nodes[i]] = createVector(x, y);
   }
+  //creating masks
+  for (let node of nodes) {
+    let img = nodeImages[node];
+    let degree = nodeDegrees[node];
+    let size = int(map(degree, 1, Math.max(...Object.values(nodeDegrees)), minNode, maxNode));
+
+    if (img) {
+      let mask = createGraphics(size, size);
+      mask.noStroke();
+      mask.fill(0);
+      mask.ellipse(size / 2, size / 2, size, size);
+
+      let masked = createImage(size, size);
+      masked.copy(img, 0, 0, img.width, img.height, 0, 0, size, size);
+      masked.mask(mask);
+      maskedImages[node] = masked;
+    }
+  }
 }
 
 //drawing now
@@ -105,7 +124,7 @@ function setup() {
    fill(lightblu);
    rect(windowWidth/25, windowHeight/3.15, windowWidth/3.2, 5);
    fill(255);
-   textSize(16);
+   textSize(18);
    text("In the eighteenth century, celebrities, who captured the public's attention in the social hubs of London and Paris, emerged in multiple spheres ranging from the arts to fashion. This network reveals a crucial dimension of celebrity culture: the ways in which celebrity circles intersected. Hover over celebrities to see who they connected with throughout their lives", windowWidth/20, windowHeight/2, windowWidth/3.5)
    
   hoveredNode = null;
@@ -145,26 +164,12 @@ function setup() {
 	ellipse(pos.x, pos.y, nodesize*8/7, nodesize*8/7);
  
     //testing clip stuff
-    let img = nodeImages[node];
+    let maskedImg = maskedImages[node];
+    if (maskedImg) {
+      imageMode(CENTER);
+      image(maskedImg, pos.x, pos.y);
+    }
 
-      if (img) {
-        noStroke();
-        let size = int(nodesize); // Ensure it's an integer
-
-        // Create a circular mask
-        let imgmask = createGraphics(size, size);
-        imgmask.noStroke();
-        imgmask.fill(0);
-        imgmask.ellipse(size / 2, size / 2, size, size);
-
-        // Create an image the same size as mask
-        let nodeImg = createImage(size, size);
-        nodeImg.copy(img, 0, 0, img.width, img.height, 0, 0, size, size);
-        nodeImg.mask(imgmask);
-
-        imageMode(CENTER);
-        image(nodeImg, pos.x, pos.y);
-      }
     //text(node, pos.x, pos.y - nodesize / 2 - 5);
   }
 
