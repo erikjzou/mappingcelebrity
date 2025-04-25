@@ -9,8 +9,8 @@ let myFont;
 let maskedImages = {}; // To store masked circular images
 //to do the different colors, I could attach the colors 
 
-let minNode = 80;
-let maxNode = 120;
+let minNode = 60;
+let maxNode = 100;
 function preload() {
   nodeImages["Voltaire"] = loadImage("voltaire.jpg");
   nodeImages["Benjamin Franklin"] = loadImage("franklin.jpg");
